@@ -1,26 +1,17 @@
 import React from 'react'
-import { Text, View } from 'react-native'
-import { SignedIn, SignedOut, useUser } from '@clerk/clerk-expo'
-import { Link } from 'expo-router'
+import { Text } from 'react-native'
+import { SignedIn, useUser } from '@clerk/clerk-expo'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Home = () => {
   const { user } = useUser();
 
   return (
-    <View>
+    <SafeAreaView>
       <SignedIn>
         <Text>Hello {user?.emailAddresses[0].emailAddress}</Text>
       </SignedIn>
-      <SignedOut>
-        <Link href="/signIn">
-        <Text>Sign In</Text>
-        </Link>
-        <Link href="/signUp">
-        <Text>Sign Up</Text>
-        </Link>
-      </SignedOut>
-      <Text>Home</Text>
-    </View>
+    </SafeAreaView>
   )
 }
 

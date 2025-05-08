@@ -11,7 +11,7 @@ import OAuth from '@/components/0Auth'
 
 const SignUp = () => {
   const router = useRouter();
-  const { isLoaded, signUp, setActive } = useSignUp();
+  const { isLoaded, signUp, setActive } = useSignUp();//Clerk hook to handle sign-up process
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [form, setForm] = useState({
     name: "",
@@ -136,8 +136,10 @@ const SignUp = () => {
 
         <ReactNativeModal isVisible={verification.state === 'pending'}
           onModalHide={() => { 
-            if (verification.state === 'success') setShowSuccessModal(true)}
-          }
+            if (verification.state === 'success') {
+               setShowSuccessModal(true)
+            }
+          }}
         >
           <View className='bg-white px-7 py-9 rounded-2xl min-h-[300px]'>
             <Text className='text-2xl font-JakartaExtraBold mb-2'>
