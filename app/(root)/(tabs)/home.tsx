@@ -1,9 +1,10 @@
 import React from 'react'
-import { FlatList, Text } from 'react-native'
+import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native'
 import { SignedIn, useUser } from '@clerk/clerk-expo'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import RideCard from '@/components/RideCard';
+import { images } from '@/constants';
 
 const recentRides = [
     {
@@ -102,7 +103,8 @@ const recentRides = [
             "rating": "4.70"
         }
     }
-]; 
+];
+const loading = true; 
 
 const Home = () => {
   const { user } = useUser();
@@ -112,6 +114,32 @@ const Home = () => {
       <FlatList
         data={recentRides?.slice(0, 5)}
         renderItem={({item}) => <RideCard ride={item} />}
+        className='px-5'
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{
+          paddingBottom: 100
+        }}
+        //Define what an emty list should look like (loading for example)
+        ListEmptyComponent={() => (
+          <View className='flex flex-col items-center justify-center'>
+            {!loading ? (
+              <>
+                <Image 
+                  source={images.noResult} 
+                  className='w-40 h-40' 
+                  alt='Aucune recherche associée' 
+                  resizeMode='contain'
+                />
+                <Text className='text-sm'>Aucune recherche associée</Text>
+              </>
+            ) : (
+              <ActivityIndicator
+                size="small"
+                color="#000"
+              />
+            )}
+          </View>
+        )}
       />
     </SafeAreaView>
   )
