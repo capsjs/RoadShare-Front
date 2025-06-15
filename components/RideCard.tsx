@@ -14,6 +14,7 @@ const RideCard = ({
     created_at,
     ride_time,
     driver,
+    user_email,
     payment_status,
   } 
 }: { ride: Ride }) => {
