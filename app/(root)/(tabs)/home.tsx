@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import * as Location from "expo-location";
 import { ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 import { SignedIn, useUser } from '@clerk/clerk-expo'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import RideCard from '@/components/RideCard';
-import { icons, images } from '@/constants';
 import GoogleTextInput from '@/components/GoogleTextInput';
 import Map from '@/components/Map';
+import { useLocationStore } from '@/store';
+import { icons, images } from '@/constants';
 
 const recentRides = [
     {
@@ -109,7 +111,33 @@ const recentRides = [
 const loading = true; 
 
 const Home = () => {
-  const { user } = useUser();  
+  const { user } = useUser();
+  const { setUserLocation, setDestinationLocation } = useLocationStore();
+
+  const [haspermissions, setHasPermissions] = useState(false);
+
+  useEffect(() => {
+    const requestLocation = async () => {
+
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setHasPermissions(false)
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync();
+      const address = await Location.reverseGeocodeAsync({
+        latitude: location.coords?.latitude!,
+        longitude: location.coords?.longitude!,
+      });
+      setUserLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        address: `${address[0].name}, ${address[0].region}`,
+      });
+    };
+    requestLocation();
+  }, []);
 
   const handleSignOut = () => {
   };
