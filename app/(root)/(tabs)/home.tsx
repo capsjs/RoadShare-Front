@@ -131,8 +131,10 @@ const Home = () => {
         longitude: location.coords?.longitude!,
       });
       setUserLocation({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+        // latitude: location.coords.latitude,
+        // longitude: location.coords.longitude,
+        latitude: 48.866667,
+        longitude: 2.333333,
         address: `${address[0].name}, ${address[0].region}`,
       });
     };

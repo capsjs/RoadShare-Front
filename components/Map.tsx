@@ -1,8 +1,20 @@
 import MapView, { PROVIDER_DEFAULT } from "react-native-maps";
 import { StyleSheet } from 'react-native';
 
+import { useLocationStore } from "@/store";
+import { calculateRegion } from "@/lib/map";
+
 
 const Map = () => {
+  const { userLongitude, userLatitude, destinationLongitude, destinationLatitude } = useLocationStore();
+
+  const region = calculateRegion({
+    userLongitude,
+    userLatitude,
+    destinationLatitude,
+    destinationLongitude,
+  });
+
   return (
     <MapView
       provider={PROVIDER_DEFAULT} 
@@ -12,6 +24,7 @@ const Map = () => {
       showsPointsOfInterest={false}
       showsUserLocation={true}
       userInterfaceStyle="light"
+      initialRegion={region}
     >
     </MapView>
   );
