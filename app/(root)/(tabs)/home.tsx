@@ -3,12 +3,14 @@ import * as Location from "expo-location";
 import { ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 import { SignedIn, useUser } from '@clerk/clerk-expo'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { router } from 'expo-router';
 
 import RideCard from '@/components/RideCard';
-import GoogleTextInput from '@/components/GoogleTextInput';
+// import GoogleTextInput from '@/components/GoogleTextInput';
 import Map from '@/components/Map';
 import { useLocationStore } from '@/store';
 import { icons, images } from '@/constants';
+import CustomPlacesInput from '@/components/CustomPlacesInput';
 
 const recentRides = [
     {
@@ -144,7 +146,13 @@ const Home = () => {
   const handleSignOut = () => {
   };
 
-  const handleDestinationPress = () => {
+  const handleDestinationPress = (location: {
+    latitude: number;
+    longitude: number;
+    address: string;
+  }) => {
+    setDestinationLocation(location);
+    router.push("/(root)/find-ride");
   };
 
   return (
@@ -189,12 +197,15 @@ const Home = () => {
               </TouchableOpacity>
             </View>
 
-            <GoogleTextInput
+            {/* <GoogleTextInput
               icon={icons.search}
               containerStyle="bg-white shadow-md shadow-neutral-300"
               handlePress={handleDestinationPress}
-            />
-
+            /> */}
+            <CustomPlacesInput onSelect={(location) => {
+              setDestinationLocation(location);
+              router.push("/(root)/find-ride");
+            }} />
             <>
             <Text className='text-xl font-JakartaBold mt-5 mb-3'>
               Votre position actuelle

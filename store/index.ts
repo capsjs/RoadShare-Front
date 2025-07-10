@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { DriverStore, LocationStore } from "@/types/type";
+import { LocationStore } from "@/types/type";
 
 export const useLocationStore = create<LocationStore>((set) => ({
   userAddress: null,

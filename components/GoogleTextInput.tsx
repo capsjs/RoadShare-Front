@@ -19,7 +19,8 @@ const GoogleTextInput = ({
 
   return (
     <View className={`flex flex-row items-center justify-center relative z-50 rounded-xl mb-5 ${containerStyle}`}>
-       {/* <GooglePlacesAutocomplete
+       <GooglePlacesAutocomplete
+       onFail={(error) => console.error('Google Places Error:', error)}
         fetchDetails={true}
         placeholder="Search"
         debounce={200}
@@ -66,6 +67,7 @@ const GoogleTextInput = ({
         query={{
           key: googlePlacesApiKey,
           language: "fr",
+          type: '(cities)'
         }}
         renderLeftButton={() => (
           <View className="justify-center items-center w-6 h-6">
@@ -79,8 +81,11 @@ const GoogleTextInput = ({
         textInputProps={{
           placeholderTextColor: "gray",
           placeholder: initialLocation ?? "Où va-t-on?",
+           onChangeText: (text) => {
+            if (!text || text.length < 2) return; // Empêche les appels trop précoces
+          }
         }}
-      /> */}
+      />
     </View>
   )
 };
