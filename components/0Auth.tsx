@@ -1,7 +1,7 @@
 import { View, Text, Image } from 'react-native'
 import React from 'react'
 
-import CustomButton from './customButton'
+import CustomButton from './CustomButton'
 import { icons } from '@/constants'
 
 const OAuth = () => {

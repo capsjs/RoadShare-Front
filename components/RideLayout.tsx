@@ -12,7 +12,7 @@ const RideLayout = ({
   snapPoints,
   children,
 }: {
-  title: string;
+  title?: string;
   snapPoints?: string[];
   children: React.ReactNode;
 }) => {
@@ -34,7 +34,7 @@ const RideLayout = ({
               </View>
             </TouchableOpacity>
             <Text className='text-xl font-JakartaSemiBold ml-5'>
-              {title || "Retour"}
+              {title || ""}
             </Text>
           </View>
           <Map />

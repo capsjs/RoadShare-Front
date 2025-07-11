@@ -6,7 +6,7 @@ import { ReactNativeModal } from 'react-native-modal'
 
 import { icons, images } from '@/constants'
 import InputField from '@/components/inputField'
-import CustomButton from '@/components/customButton'
+import CustomButton from '@/components/CustomButton'
 import OAuth from '@/components/0Auth'
 
 const SignUp = () => {

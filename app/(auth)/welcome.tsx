@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import Swiper from 'react-native-swiper'
 
 import { onboarding } from '@/constants'
-import CustomButton from '@/components/customButton'
+import CustomButton from '@/components/CustomButton'
 
 const Onboarding = () => {
   const swiperRef = useRef<Swiper>(null);

@@ -4,7 +4,7 @@ import { useLocationStore } from "@/store";
 import RideLayout from "@/components/RideLayout";
 import { icons } from "@/constants";
 import GoogleTextInput from "@/components/GoogleTextInput";
-import CustomButton from "@/components/customButton";
+import CustomButton from "@/components/CustomButton";
 import { router } from "expo-router";
 
 const FindRide = () => {

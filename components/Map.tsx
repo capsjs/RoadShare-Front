@@ -4,8 +4,7 @@ import { StyleSheet } from 'react-native';
 import { useLocationStore } from "@/store";
 import { calculateRegion } from "@/lib/map";
 
-
-const Map = () => {
+  const Map = () => {
   const { userLongitude, userLatitude, destinationLongitude, destinationLatitude } = useLocationStore();
 
   const region = calculateRegion({
