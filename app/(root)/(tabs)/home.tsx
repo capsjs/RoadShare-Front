@@ -5,8 +5,8 @@ import { SignedIn, useUser } from '@clerk/clerk-expo'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { router } from 'expo-router';
 
+import GoogleTextInput from '@/components/GoogleTextInput';
 import RideCard from '@/components/RideCard';
-// import GoogleTextInput from '@/components/GoogleTextInput';
 import Map from '@/components/Map';
 import { useLocationStore } from '@/store';
 import { icons, images } from '@/constants';
@@ -127,7 +127,8 @@ const Home = () => {
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync();
+      let location = await Location.getCurrentPositionAsync({});
+
       const address = await Location.reverseGeocodeAsync({
         latitude: location.coords?.latitude!,
         longitude: location.coords?.longitude!,
@@ -153,7 +154,7 @@ const Home = () => {
   }) => {
     setDestinationLocation(location);
     router.push("/(root)/find-ride");
-  };
+  };  
 
   return (
     <SafeAreaView className='bg-general-500'>
@@ -202,10 +203,10 @@ const Home = () => {
               containerStyle="bg-white shadow-md shadow-neutral-300"
               handlePress={handleDestinationPress}
             /> */}
-            <CustomPlacesInput onSelect={(location) => {
-              setDestinationLocation(location);
-              router.push("/(root)/find-ride");
-            }} />
+            <CustomPlacesInput
+              onSelect={handleDestinationPress}
+            />
+    
             <>
             <Text className='text-xl font-JakartaBold mt-5 mb-3'>
               Votre position actuelle
