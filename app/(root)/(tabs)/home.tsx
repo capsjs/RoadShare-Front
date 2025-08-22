@@ -226,10 +226,14 @@ const Home = () => {
                 <Map />
               </View>
             </>
-
-            <Text className="text-xl font-JakartaBold mt-5 mb-3">
-              Nouveaux trajets
-            </Text>
+            <View className="flex flex-row justify-between">
+              <Text className="text-xl font-JakartaBold mt-5 mb-3">
+                Nouveaux trajets
+              </Text>
+              <Text className="text-xl font-JakartaBold mt-5 mb-3">
+                Filtrer
+              </Text>
+            </View>
           </>
         )}
       />
