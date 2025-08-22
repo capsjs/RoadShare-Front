@@ -2,6 +2,7 @@
   "name": "roadshare",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "workspaces": ["server"],
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
@@ -23,6 +24,7 @@
     "@neondatabase/serverless": "^1.0.1",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/native": "^7.0.14",
+    "cors": "^2.8.5",
     "expo": "^53.0.0",
     "expo-auth-session": "~6.1.5",
     "expo-blur": "~14.1.4",
@@ -38,6 +40,7 @@
     "expo-symbols": "~0.4.4",
     "expo-system-ui": "~5.0.7",
     "expo-web-browser": "~14.1.6",
+    "express": "^5.1.0",
     "nativewind": "^4.1.23",
     "react": "19.0.0",
     "react-dom": "19.0.0",
@@ -58,6 +61,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
     "@types/jest": "^29.5.12",
     "@types/react": "~19.0.10",
     "@types/react-test-renderer": "^18.3.0",
