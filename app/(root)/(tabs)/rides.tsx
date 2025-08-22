@@ -1,8 +1,8 @@
-import Map from "@/components/Map";
-import MapTracking from "@/components/MapTracking";
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+import MapTracking from "@/components/MapTracking";
 
 const Rides = () => {
   return (
