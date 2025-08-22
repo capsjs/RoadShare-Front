@@ -1,6 +1,7 @@
-import React from 'react'
-import { Tabs } from "expo-router"
+import React from "react";
+import { Tabs } from "expo-router";
 import { Image, ImageSourcePropType, View } from "react-native";
+import { FontAwesome6 } from "@expo/vector-icons";
 
 import { icons } from "@/constants";
 
@@ -11,8 +12,11 @@ const TabIcon = ({
   source: ImageSourcePropType;
   focused: boolean;
 }) => (
-
-  <View className={`flex flex-row justify-center rounded-full w-12 h-12 items-center ${focused ? "bg-pink-600" : ""}`}>
+  <View
+    className={`flex flex-row justify-center rounded-full w-12 h-12 items-center ${
+      focused ? "bg-pink-600" : ""
+    }`}
+  >
     <Image
       source={source}
       tintColor="white"
@@ -21,31 +25,31 @@ const TabIcon = ({
     />
   </View>
 );
-  
-export default function Layout () {
+
+export default function Layout() {
   return (
     <Tabs
-    initialRouteName="home"
-    screenOptions={{
-      tabBarActiveTintColor: "white",
-      tabBarInactiveTintColor: "white",
-      tabBarShowLabel: false,
-      tabBarStyle: {
-        backgroundColor: "#333333",
-        borderRadius: 50,
-        overflow: "hidden",
-        marginHorizontal: 20,
-        marginBottom: 20,
-        height: 60,
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        position: "absolute",
-      },
-    }}
-  >
+      initialRouteName="home"
+      screenOptions={{
+        tabBarActiveTintColor: "white",
+        tabBarInactiveTintColor: "white",
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          backgroundColor: "#333333",
+          borderRadius: 50,
+          overflow: "hidden",
+          marginHorizontal: 20,
+          marginBottom: 20,
+          height: 60,
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          position: "absolute",
+        },
+      }}
+    >
       <Tabs.Screen
-        name='home'
+        name="home"
         options={{
           title: "home",
           headerShown: false,
@@ -55,17 +59,23 @@ export default function Layout () {
         }}
       />
       <Tabs.Screen
-        name='rides'
+        name="rides"
         options={{
           title: "rides",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon source={icons.list} focused={focused} />
+            <View
+              className={`flex flex-row justify-center rounded-full w-12 h-12 items-center ${
+                focused ? "bg-pink-600" : ""
+              }`}
+            >
+              <FontAwesome6 name="plus" size={30} color="white" />
+            </View>
           ),
         }}
       />
       <Tabs.Screen
-        name='chat'
+        name="chat"
         options={{
           title: "chat",
           headerShown: false,
@@ -75,7 +85,7 @@ export default function Layout () {
         }}
       />
       <Tabs.Screen
-        name='profile'
+        name="profile"
         options={{
           title: "profile",
           headerShown: false,
@@ -85,5 +95,5 @@ export default function Layout () {
         }}
       />
     </Tabs>
-  )
-};
+  );
+}

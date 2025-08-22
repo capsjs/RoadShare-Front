@@ -17,7 +17,8 @@
   "dependencies": {
     "@clerk/clerk-expo": "^2.8.0",
     "@expo/metro-runtime": "~5.0.4",
-    "@expo/vector-icons": "^14.0.2",
+    "@expo/vector-icons": "^14.1.0",
+    "@fortawesome/fontawesome-svg-core": "^7.0.0",
     "@gorhom/bottom-sheet": "^5.1.6",
     "@neondatabase/serverless": "^1.0.1",
     "@react-navigation/bottom-tabs": "^7.2.0",
