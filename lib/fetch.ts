@@ -1,40 +1,58 @@
+// lib/fetch.ts
 import { useState, useEffect, useCallback } from "react";
+import { Platform } from "react-native";
 
-export const fetchAPI = async (url: string, options?: RequestInit) => {
-  try {
-    const response = await fetch(url, options);
-    if (!response.ok) {
-      new Error(`HTTP error! status: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Fetch error:", error);
-    throw error;
-  }
-};
+const HOST = Platform.OS === "android" ? "10.0.2.2" : "localhost";
+const PORT = process.env.EXPO_PUBLIC_API_PORT ?? "3000";
 
-export const useFetch = <T>(url: string, options?: RequestInit) => {
+export const API_BASE =
+  process.env.EXPO_PUBLIC_API_BASE ?? `http://${HOST}:${PORT}`;
+
+function toAbsoluteUrl(path: string) {
+  if (/^https?:\/\//i.test(path)) return path;
+  const slash = path.startsWith("/") ? "" : "/";
+  return `${API_BASE}${slash}${path}`;
+}
+
+export function useFetch<T>(path: string, deps: any[] = []) {
   const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = useCallback(async () => {
+  const load = useCallback(async () => {
     setLoading(true);
     setError(null);
-
+    const url = toAbsoluteUrl(path);
     try {
-      const result = await fetchAPI(url, options);
-      setData(result.data);
-    } catch (err) {
-      setError((err as Error).message);
+      const res = await fetch(url, { headers: { Accept: "application/json" } });
+      const text = await res.text();
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status} ${url}\n${text.slice(0,200)}`);
+      }
+      try {
+        setData(JSON.parse(text));
+      } catch {
+        throw new Error(`Réponse non-JSON depuis ${url}:\n${text.slice(0,200)}`);
+      }
+    } catch (e: any) {
+      setError(e?.message ?? String(e));
     } finally {
       setLoading(false);
     }
-  }, [url, options]);
+  }, [path]);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  useEffect(() => { load(); }, [load, ...deps]);
 
-  return { data, loading, error, refetch: fetchData };
-};
+  return { data, loading, error, refetch: load };
+}
+
+export async function getDrivers() {
+  const res = await fetch(toAbsoluteUrl("/api/ride/driver"), {
+    headers: { Accept: "application/json" },
+  });
+  const text = await res.text();
+  if (!res.ok) throw new Error(`HTTP ${res.status} – ${text.slice(0,120)}`);
+  try { return JSON.parse(text); } catch {
+    throw new Error(`Réponse non-JSON: ${text.slice(0,120)}`);
+  }
+}

@@ -1,3 +1,4 @@
+// Map.tsx
 import { useEffect, useState } from "react";
 import MapView, { PROVIDER_DEFAULT } from "react-native-maps";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
@@ -11,8 +12,13 @@ import {
 import { Driver, MarkerData } from "@/types/type";
 import { useFetch } from "@/lib/fetch";
 
+// ✅ endpoint sans parenthèses + laisse useFetch préfixer avec API_BASE
 const Map = () => {
-  const { data: drivers, loading, error } = useFetch<Driver[]>("/(api)/driver");
+  const {
+    data: drivers,
+    loading,
+    error,
+  } = useFetch<Driver[]>("/api/ride/driver");
   const [markers, setMarkers] = useState<MarkerData[]>([]);
   const {
     userLongitude,
@@ -20,18 +26,15 @@ const Map = () => {
     destinationLongitude,
     destinationLatitude,
   } = useLocationStore();
-  const { selectedDriver, setDrivers } = useDriverStore();
+  const { setDrivers } = useDriverStore();
 
   useEffect(() => {
-    if (Array.isArray(drivers)) {
-      if (!userLatitude || !userLongitude) return;
-
+    if (Array.isArray(drivers) && userLatitude && userLongitude) {
       const newMarkers = generateMarkersFromData({
         data: drivers,
         userLatitude,
         userLongitude,
       });
-
       setMarkers(newMarkers);
     }
   }, [drivers, userLatitude, userLongitude]);
@@ -39,8 +42,10 @@ const Map = () => {
   useEffect(() => {
     if (
       markers.length > 0 &&
-      destinationLatitude !== undefined &&
-      destinationLongitude !== undefined
+      destinationLatitude != null &&
+      destinationLongitude != null &&
+      userLatitude &&
+      userLongitude
     ) {
       calculateDriverTimes({
         markers,
@@ -48,8 +53,8 @@ const Map = () => {
         userLongitude,
         destinationLatitude,
         destinationLongitude,
-      }).then((drivers) => {
-        setDrivers(drivers as MarkerData[]);
+      }).then((driversWithTimes) => {
+        if (driversWithTimes) setDrivers(driversWithTimes as MarkerData[]);
       });
     }
   }, [markers, destinationLatitude, destinationLongitude]);
@@ -61,42 +66,39 @@ const Map = () => {
     destinationLongitude,
   });
 
-  if (loading || (!userLatitude && !userLongitude))
+  if (loading || (!userLatitude && !userLongitude)) {
     return (
       <View className="flex justify-between items-center w-full">
         <ActivityIndicator size="small" color="#000" />
       </View>
     );
+  }
 
-  if (error)
-    return (
-      <View className="flex justify-between items-center w-full">
-        <Text>Error: {error}</Text>
-      </View>
-    );
-
+  // ❌ Ne pas bloquer l’UI — affiche la carte même si drivers en erreur
+  // (Tu peux overlay un petit message si tu veux)
   return (
-    <MapView
-      provider={PROVIDER_DEFAULT}
-      style={styles.map}
-      tintColor="black"
-      mapType="mutedStandard"
-      showsPointsOfInterest={false}
-      showsUserLocation={true}
-      userInterfaceStyle="light"
-      initialRegion={region}
-    ></MapView>
+    <View style={styles.container}>
+      {error ? (
+        <Text style={{ position: "absolute", top: 8, left: 8, zIndex: 10 }}>
+          Drivers: {error}
+        </Text>
+      ) : null}
+      <MapView
+        provider={PROVIDER_DEFAULT}
+        style={styles.map}
+        mapType="mutedStandard"
+        showsPointsOfInterest={false}
+        showsUserLocation={true}
+        userInterfaceStyle="light"
+        initialRegion={region}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  map: {
-    width: "100%",
-    height: "100%",
-  },
+  container: { flex: 1 },
+  map: { width: "100%", height: "100%" },
 });
 
 export default Map;
