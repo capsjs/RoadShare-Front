@@ -19,7 +19,9 @@ export const generateMarkersFromData = ({
             latitude: userLatitude + latOffset,
             longitude: userLongitude + lngOffset,
             title: `${driver.first_name} ${driver.last_name}`,
-            ...driver,
+            car_image_url: driver.car_image_url,
+            first_name: driver.first_name,
+            last_name: driver.last_name,
         };
     });
 };
