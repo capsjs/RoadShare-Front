@@ -16,6 +16,7 @@ export const generateMarkersFromData = ({
         const lngOffset = (Math.random() - 0.5) * 0.01; // Random offset between -0.005 and 0.005
 
         return {
+            id: driver.driver_id,
             latitude: userLatitude + latOffset,
             longitude: userLongitude + lngOffset,
             title: `${driver.first_name} ${driver.last_name}`,
