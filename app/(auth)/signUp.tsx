@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSignUp } from "@clerk/clerk-expo";
+import { useSignUp, useUser } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
 import { ReactNativeModal } from "react-native-modal";
 
@@ -16,12 +16,10 @@ import { icons, images } from "@/constants";
 import InputField from "@/components/inputField";
 import CustomButton from "@/components/CustomButton";
 import OAuth from "@/components/0Auth";
-import { useUser } from "@clerk/clerk-expo";
 import { API_BASE } from "@/lib/fetch";
 
-const { user } = useUser();
-
 const SignUp = () => {
+  const { user } = useUser();
   const router = useRouter();
   const { isLoaded, signUp, setActive } = useSignUp(); //Clerk hook to handle sign-up process
   const [showSuccessModal, setShowSuccessModal] = useState(false);
