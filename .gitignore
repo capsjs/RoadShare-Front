@@ -37,4 +37,9 @@ yarn-error.*
 
 app-example
 
+#.env
 .env
+server/.env
+server/.env.*
+!.env.example
+!server/.env.example" >> .gitignore
