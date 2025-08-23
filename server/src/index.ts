@@ -23,8 +23,29 @@ pool.query("SELECT 1").then(() => {
 
 // app.get("/api/health", (_req, res) => res.json({ ok: true }));
 
+// users from neon db
+app.get("/api/users", async (_req, res) => {
+  try {
+    const { rows } = await pool.query(`
+      SELECT
+        user_id,
+        name,
+        address,
+        email,
+        car_image_url,
+        clerk_id,
+        created_at
+      FROM users
+      ORDER BY created_at DESC
+    `);
+    res.json(rows);
+  } catch (e: any) {
+    console.error("ERROR /api/users:", e);
+    res.status(500).json({ error: e.message });
+  }
+});
 
-//Register rides in neon db
+// rides from neon db
 app.get("/api/rides", async (_req, res) => {
   // console.log("GET /api/rides")
   try {

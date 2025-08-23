@@ -69,7 +69,7 @@ export function useFetch<T>(path: string, deps: any[] = []) {
 
 //Get users
 export async function getUsers() {
-  const res = await fetch(toAbsoluteUrl("/api/ride/user"), {
+  const res = await fetch(toAbsoluteUrl("/api/users"), {
     headers: { Accept: "application/json" },
   });
   const text = await res.text();
@@ -77,7 +77,7 @@ export async function getUsers() {
   try { return JSON.parse(text); } catch {
     throw new Error(`Réponse non-JSON: ${text.slice(0,120)}`);
   }
-};
+}
 
 // Get rides
 export async function getRides(): Promise<Ride[]> {
