@@ -41,15 +41,11 @@ declare interface Ride {
   destination_latitude: number;
   destination_longitude: number;
   ride_time: number;
-  fare_price: number;
-  payment_status: string;
-  driver_id: number;
   user_id: string;
   created_at: string;
-  driver: {
-    first_name: string;
-    last_name: string;
-    car_seats: number;
+  user: {
+    name: string;
+    car_image_url: string;
   };
 }
 

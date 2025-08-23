@@ -13,9 +13,6 @@ const RideCard = ({
     destination_address,
     created_at,
     ride_time,
-    driver,
-    user_email,
-    payment_status,
   },
 }: {
   ride: Ride;
@@ -50,7 +47,7 @@ const RideCard = ({
         <View className="flex flex-col w-full mt-5 bg-general-500 rounded-lg p-3 items-start justify-center">
           <View className="flex flex-row items-center w-full justify-between mb-5">
             <Text className="text-md font-JakartaMedium text-gray-500">
-              Durée du trajet?
+              Temps
             </Text>
             <Text className="text-md font-JakartaMedium text-gray-500">
               {formatTime(ride_time)}
@@ -59,7 +56,7 @@ const RideCard = ({
 
           <View className="flex flex-row items-center w-full justify-between mb-5">
             <Text className="text-md font-JakartaMedium text-gray-500">
-              Distance?
+              Distance ??
             </Text>
             <Text className="text-md font-JakartaMedium text-gray-500">
               {formatTime(ride_time)}
@@ -72,6 +69,15 @@ const RideCard = ({
             </Text>
             <Text className="text-md font-JakartaMedium text-gray-500">
               {formatDate(created_at)}
+            </Text>
+          </View>
+
+          <View className="flex flex-row items-center w-full justify-between mb-5">
+            <Text className="text-md font-JakartaMedium text-gray-500">
+              Nom utilisateur
+            </Text>
+            <Text className="text-md font-JakartaMedium text-gray-500">
+              image car
             </Text>
           </View>
         </View>
