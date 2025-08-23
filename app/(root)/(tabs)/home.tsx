@@ -96,11 +96,16 @@ import { useFetch, type Ride } from "@/lib/fetch";
 // ];
 
 const Home = () => {
-  const { user } = useUser();
+  const { user, isSignedIn, isLoaded } = useUser();
+  if (!isLoaded) return null;
+  const displayName =
+    user?.name ??
+    user?.username ??
+    user?.primaryEmailAddress?.emailAddress?.split("@")[0] ??
+    "utilisateur";
 
   // const health = useFetch<{ ok: boolean }>("/api/health");
   // console.log("health", health.data, health.error);
-
   const { data, loading, error } = useFetch<Ride[]>("/api/rides");
   const { setUserLocation, setDestinationLocation } = useLocationStore();
   const [haspermissions, setHasPermissions] = useState(false);
@@ -185,7 +190,7 @@ const Home = () => {
           <>
             <View className="flex flex-row items-center justify-between my-5">
               <Text className="text-xl font-JakartaExtraBold">
-                Bienvenue {user?.name}👋
+                Bienvenue {displayName}👋
               </Text>
               <TouchableOpacity
                 onPress={handleSignOut}

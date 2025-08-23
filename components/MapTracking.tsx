@@ -28,7 +28,7 @@ export default function MapTracking() {
     data: users,
     loading: loadingUsers,
     error: usersError,
-  } = useFetch<User[]>("/api/ride/user");
+  } = useFetch<User[]>("/api/users");
   const [markers, setMarkers] = useState<MarkerData[]>([]);
 
   const {

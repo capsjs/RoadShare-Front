@@ -23,7 +23,7 @@ pool.query("SELECT 1").then(() => {
 
 // app.get("/api/health", (_req, res) => res.json({ ok: true }));
 
-// users from neon db
+// GET USERS FROM NEON DB
 app.get("/api/users", async (_req, res) => {
   try {
     const { rows } = await pool.query(`
@@ -45,7 +45,7 @@ app.get("/api/users", async (_req, res) => {
   }
 });
 
-// rides from neon db
+// GET RIDES FROM NEON DB
 app.get("/api/rides", async (_req, res) => {
   // console.log("GET /api/rides")
   try {
@@ -76,6 +76,34 @@ app.get("/api/rides", async (_req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+
+// POST NEW USER
+app.post("/api/users", async (req, res) => {
+  const { clerk_id, name, address, email, car_image_url } = req.body || {};
+  if (!clerk_id) {
+    return res.status(400).json({ error: "clerk_id is required" });
+  }
+  try {
+    const { rows } = await pool.query(
+      `
+      INSERT INTO users (clerk_id, name, address, email, car_image_url)
+      VALUES ($1, $2, $3, $4, $5)
+      ON CONFLICT (clerk_id) DO UPDATE
+        SET name = EXCLUDED.name,
+            address = EXCLUDED.address,
+            email = EXCLUDED.email,
+            car_image_url = EXCLUDED.car_image_url
+      RETURNING user_id, clerk_id, name, address, email, car_image_url, created_at;
+      `,
+      [clerk_id, name ?? null, address ?? null, email ?? null, car_image_url ?? null]
+    );
+    res.status(201).json(rows[0]);
+  } catch (e: any) {
+    console.error("ERROR /api/users (POST):", e);
+    res.status(500).json({ error: e.message });
+  }
+});
+
 
 
 const PORT = process.env.PORT || 3000;

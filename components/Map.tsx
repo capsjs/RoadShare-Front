@@ -13,7 +13,7 @@ import { useFetch } from "@/lib/fetch";
 
 // ✅ endpoint sans parenthèses + laisse useFetch préfixer avec API_BASE
 const Map = () => {
-  const { data: users, loading, error } = useFetch<User[]>("/api/ride/user");
+  const { data: users, loading, error } = useFetch<User[]>("/api/users");
   const [markers, setMarkers] = useState<MarkerData[]>([]);
   const {
     userLongitude,
