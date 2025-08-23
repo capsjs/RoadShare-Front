@@ -18,91 +18,105 @@ import Map from "@/components/Map";
 import { useLocationStore } from "@/store";
 import { icons, images } from "@/constants";
 import CustomPlacesInput from "@/components/CustomPlacesInput";
+import { useFetch, type Ride } from "@/lib/fetch";
 
-const recentRides = [
-  {
-    ride_id: "1",
-    origin_address: "Kathmandu, Nepal",
-    destination_address: "Pokhara, Nepal",
-    origin_latitude: "27.717245",
-    origin_longitude: "85.323961",
-    destination_latitude: "28.209583",
-    destination_longitude: "83.985567",
-    ride_time: 391,
-    user_id: "2",
-    created_at: "2024-08-12 05:19:20.620007",
-    user: {
-      user_id: "2",
-      name: "David",
-      car_image_url:
-        "https://ucarecdn.com/a3872f80-c094-409c-82f8-c9ff38429327/-/preview/930x932/",
-    },
-  },
-  {
-    ride_id: "2",
-    origin_address: "Jalkot, MH",
-    destination_address: "Pune, Maharashtra, India",
-    origin_latitude: "18.609116",
-    origin_longitude: "77.165873",
-    destination_latitude: "18.520430",
-    destination_longitude: "73.856744",
-    ride_time: 491,
-    user_id: "1",
-    created_at: "2024-08-12 06:12:17.683046",
-    user: {
-      user_id: "1",
-      name: "James",
-      car_image_url:
-        "https://ucarecdn.com/a2dc52b2-8bf7-4e49-9a36-3ffb5229ed02/-/preview/465x466/",
-    },
-  },
-  {
-    ride_id: "3",
-    origin_address: "Zagreb, Croatia",
-    destination_address: "Rijeka, Croatia",
-    origin_latitude: "45.815011",
-    origin_longitude: "15.981919",
-    destination_latitude: "45.327063",
-    destination_longitude: "14.442176",
-    ride_time: 124,
-    user_id: "3",
-    created_at: "2024-08-12 08:49:01.809053",
-    user: {
-      user_id: "3",
-      name: "Wilson",
-      car_image_url:
-        "https://ucarecdn.com/a2dc52b2-8bf7-4e49-9a36-3ffb5229ed02/-/preview/465x466/",
-    },
-  },
-  {
-    ride_id: "4",
-    origin_address: "Okayama, Japan",
-    destination_address: "Osaka, Japan",
-    origin_latitude: "34.655531",
-    origin_longitude: "133.919795",
-    destination_latitude: "34.693725",
-    destination_longitude: "135.502254",
-    ride_time: 159,
-    user_id: "4",
-    created_at: "2024-08-12 18:43:54.297838",
-    user: {
-      user_id: "4",
-      name: "Michael",
-      car_image_url:
-        "https://ucarecdn.com/289764fb-55b6-4427-b1d1-f655987b4a14/-/preview/930x932/",
-    },
-  },
-];
-
-const loading = true;
+// const recentRides = [
+//   {
+//     ride_id: "1",
+//     origin_address: "Kathmandu, Nepal",
+//     destination_address: "Pokhara, Nepal",
+//     origin_latitude: "27.717245",
+//     origin_longitude: "85.323961",
+//     destination_latitude: "28.209583",
+//     destination_longitude: "83.985567",
+//     ride_time: 391,
+//     user_id: "2",
+//     created_at: "2024-08-12 05:19:20.620007",
+//     user: {
+//       user_id: "2",
+//       name: "David",
+//       car_image_url:
+//         "https://ucarecdn.com/a3872f80-c094-409c-82f8-c9ff38429327/-/preview/930x932/",
+//     },
+//   },
+//   {
+//     ride_id: "2",
+//     origin_address: "Jalkot, MH",
+//     destination_address: "Pune, Maharashtra, India",
+//     origin_latitude: "18.609116",
+//     origin_longitude: "77.165873",
+//     destination_latitude: "18.520430",
+//     destination_longitude: "73.856744",
+//     ride_time: 491,
+//     user_id: "1",
+//     created_at: "2024-08-12 06:12:17.683046",
+//     user: {
+//       user_id: "1",
+//       name: "James",
+//       car_image_url:
+//         "https://ucarecdn.com/a2dc52b2-8bf7-4e49-9a36-3ffb5229ed02/-/preview/465x466/",
+//     },
+//   },
+//   {
+//     ride_id: "3",
+//     origin_address: "Zagreb, Croatia",
+//     destination_address: "Rijeka, Croatia",
+//     origin_latitude: "45.815011",
+//     origin_longitude: "15.981919",
+//     destination_latitude: "45.327063",
+//     destination_longitude: "14.442176",
+//     ride_time: 124,
+//     user_id: "3",
+//     created_at: "2024-08-12 08:49:01.809053",
+//     user: {
+//       user_id: "3",
+//       name: "Wilson",
+//       car_image_url:
+//         "https://ucarecdn.com/a2dc52b2-8bf7-4e49-9a36-3ffb5229ed02/-/preview/465x466/",
+//     },
+//   },
+//   {
+//     ride_id: "4",
+//     origin_address: "Okayama, Japan",
+//     destination_address: "Osaka, Japan",
+//     origin_latitude: "34.655531",
+//     origin_longitude: "133.919795",
+//     destination_latitude: "34.693725",
+//     destination_longitude: "135.502254",
+//     ride_time: 159,
+//     user_id: "4",
+//     created_at: "2024-08-12 18:43:54.297838",
+//     user: {
+//       user_id: "4",
+//       name: "Michael",
+//       car_image_url:
+//         "https://ucarecdn.com/289764fb-55b6-4427-b1d1-f655987b4a14/-/preview/930x932/",
+//     },
+//   },
+// ];
 
 const Home = () => {
   const { user } = useUser();
-  console.log("userName", user?.name);
 
+  // const health = useFetch<{ ok: boolean }>("/api/health");
+  // console.log("health", health.data, health.error);
+
+  const { data, loading, error } = useFetch<Ride[]>("/api/rides");
   const { setUserLocation, setDestinationLocation } = useLocationStore();
-
   const [haspermissions, setHasPermissions] = useState(false);
+
+  // if (loading)
+  //   return (
+  //     <View className="flex-1 items-center justify-center">
+  //       <ActivityIndicator />
+  //     </View>
+  //   );
+  // if (error)
+  //   return (
+  //     <View className="p-4">
+  //       <Text>Erreur: {error}</Text>
+  //     </View>
+  //   );
 
   useEffect(() => {
     const requestLocation = async () => {
@@ -111,9 +125,7 @@ const Home = () => {
         setHasPermissions(false);
         return;
       }
-
       let location = await Location.getCurrentPositionAsync({});
-
       const address = await Location.reverseGeocodeAsync({
         latitude: location.coords?.latitude!,
         longitude: location.coords?.longitude!,
@@ -143,18 +155,9 @@ const Home = () => {
   return (
     <SafeAreaView className="bg-general-500">
       <FlatList
-        data={recentRides?.slice(0, 5)}
-        renderItem={({ item }) => (
-          <RideCard
-            ride={{
-              ...item,
-              origin_latitude: Number(item.origin_latitude),
-              origin_longitude: Number(item.origin_longitude),
-              destination_latitude: Number(item.destination_latitude),
-              destination_longitude: Number(item.destination_longitude),
-            }}
-          />
-        )}
+        data={data ?? []}
+        keyExtractor={(item) => item.ride_id}
+        renderItem={({ item }) => <RideCard ride={item} />}
         className="px-5"
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
@@ -182,7 +185,7 @@ const Home = () => {
           <>
             <View className="flex flex-row items-center justify-between my-5">
               <Text className="text-xl font-JakartaExtraBold">
-                Bienvenue {recentRides.map((user) => user.user.name)}👋
+                Bienvenue {user?.name}👋
               </Text>
               <TouchableOpacity
                 onPress={handleSignOut}

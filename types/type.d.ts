@@ -27,21 +27,19 @@ declare interface MapProps {
   onMapReady?: () => void;
 }
 
-declare interface Ride {
+type Ride = {
+  ride_id: string;
   origin_address: string;
   destination_address: string;
   origin_latitude: number;
   origin_longitude: number;
   destination_latitude: number;
   destination_longitude: number;
-  ride_time: number;
+  ride_time: number;             // secondes
   user_id: string;
   created_at: string;
-  user: {
-    name: string;
-    car_image_url: string;
-  };
-}
+  user: { user_id: string; name: string; car_image_url: string | null };
+};
 
 declare interface ButtonProps extends TouchableOpacityProps {
   title: string;
