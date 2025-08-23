@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { DriverStore, LocationStore, MarkerData } from "@/types/type";
+import { UserStore, LocationStore, MarkerData } from "@/types/type";
 
 export const useLocationStore = create<LocationStore>((set) => ({
   userLatitude: null,
@@ -24,9 +24,9 @@ export const useLocationStore = create<LocationStore>((set) => ({
       userAddress: address,
     }));
 
-    // if driver is selected and now new location is set, clear the selected driver
-    const { selectedDriver, clearSelectedDriver } = useDriverStore.getState();
-    if (selectedDriver) clearSelectedDriver();
+    // if user is selected and now new location is set, clear the selected user
+    const { selectedUser, clearSelectedUser } = useUserStore.getState();
+    if (selectedUser) clearSelectedUser();
   },
 
   setDestinationLocation: ({
@@ -45,16 +45,16 @@ export const useLocationStore = create<LocationStore>((set) => ({
     }));
 
     // if driver is selected and now new location is set, clear the selected driver
-    const { selectedDriver, clearSelectedDriver } = useDriverStore.getState();
-    if (selectedDriver) clearSelectedDriver();
+    const { selectedUser, clearSelectedUser } = useUserStore.getState();
+    if (selectedUser) clearSelectedUser();
   },
 }));
 
-export const useDriverStore = create<DriverStore>((set) => ({
-  drivers: [] as MarkerData[],
-  selectedDriver: null,
-  setSelectedDriver: (driverId: number) =>
-    set(() => ({ selectedDriver: driverId })),
-  setDrivers: (drivers: MarkerData[]) => set(() => ({ drivers })),
-  clearSelectedDriver: () => set(() => ({ selectedDriver: null })),
+export const useUserStore = create<UserStore>((set) => ({
+  users: [] as MarkerData[],
+  selectedUser: null,
+  setSelectedUser: (userId: number) =>
+    set(() => ({ selectedUser: userId })),
+  setUsers: (users: MarkerData[]) => set(() => ({ users })),
+  clearSelectedUser: () => set(() => ({ selectedUser: null })),
 }));

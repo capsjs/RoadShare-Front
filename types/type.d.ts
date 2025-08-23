@@ -1,13 +1,12 @@
 import { TextInputProps, TouchableOpacityProps } from "react-native";
 
-declare interface Driver {
+declare interface User {
   id: number;
-  first_name: string;
-  last_name: string;
-  profile_image_url: string;
+  name: string;
+  address: string;
+  email: string;
   car_image_url: string;
-  car_seats: number;
-  rating: number;
+  created_at: string;
 }
 
 declare interface MarkerData {
@@ -15,14 +14,9 @@ declare interface MarkerData {
   longitude: number;
   id: number;
   title: string;
-  profile_image_url: string;
   car_image_url: string;
-  car_seats: number;
-  rating: number;
-  first_name: string;
-  last_name: string;
+  name: string;
   time?: number;
-  price?: string;
 }
 
 declare interface MapProps {
@@ -85,13 +79,6 @@ declare interface InputFieldProps extends TextInputProps {
   className?: string;
 }
 
-declare interface PaymentProps {
-  fullName: string;
-  email: string;
-  amount: string;
-  driverId: number;
-  rideTime: number;
-}
 
 declare interface LocationStore {
   userLatitude: number | null;
@@ -120,15 +107,15 @@ declare interface LocationStore {
   }) => void;
 }
 
-declare interface DriverStore {
-  drivers: MarkerData[];
-  selectedDriver: number | null;
-  setSelectedDriver: (driverId: number) => void;
-  setDrivers: (drivers: MarkerData[]) => void;
-  clearSelectedDriver: () => void;
+declare interface UserStore {
+  users: MarkerData[];
+  selectedUser: number | null;
+  setSelectedUser: (userId: number) => void;
+  setUsers: (users: MarkerData[]) => void;
+  clearSelectedUser: () => void;
 }
 
-declare interface DriverCardProps {
+declare interface UserCardProps {
   item: MarkerData;
   selected: number;
   setSelected: () => void;

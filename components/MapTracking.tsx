@@ -14,9 +14,9 @@ import {
 } from "react-native";
 import * as Location from "expo-location";
 
-import { useDriverStore, useLocationStore } from "@/store";
+import { useUserStore, useLocationStore } from "@/store";
 import { calculateRegion, generateMarkersFromData } from "@/lib/map";
-import { Driver, MarkerData } from "@/types/type";
+import { User, MarkerData } from "@/types/type";
 import { useFetch, API_BASE } from "@/lib/fetch";
 import { useTrackStore } from "@/store/track";
 import { SaveTrackModalOverlay } from "./SaveTrackModalOverlay";
@@ -24,12 +24,11 @@ import { SaveTrackModalOverlay } from "./SaveTrackModalOverlay";
 const GOOGLE_KEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
 
 export default function MapTracking() {
-  // --- tes drivers (optionnel pour l’affichage) ---
   const {
-    data: drivers,
-    loading: loadingDrivers,
-    error: driversError,
-  } = useFetch<Driver[]>("/api/ride/driver");
+    data: users,
+    loading: loadingUsers,
+    error: usersError,
+  } = useFetch<User[]>("/api/ride/user");
   const [markers, setMarkers] = useState<MarkerData[]>([]);
 
   const {
@@ -50,16 +49,16 @@ export default function MapTracking() {
 
   // initialise tes marqueurs (comme avant)
   useEffect(() => {
-    if (Array.isArray(drivers) && userLatitude && userLongitude) {
+    if (Array.isArray(users) && userLatitude && userLongitude) {
       setMarkers(
         generateMarkersFromData({
-          data: drivers,
+          data: users,
           userLatitude,
           userLongitude,
         })
       );
     }
-  }, [drivers, userLatitude, userLongitude]);
+  }, [users, userLatitude, userLongitude]);
 
   // région initiale (reprend ta fonction)
   const region: Region = calculateRegion({
@@ -177,15 +176,15 @@ export default function MapTracking() {
 
   return (
     <View style={styles.container}>
-      {loadingDrivers && !hasUser ? (
+      {loadingUsers && !hasUser ? (
         <View style={styles.loader}>
           <ActivityIndicator size="small" />
         </View>
       ) : null}
 
       {/* Message d’erreur drivers, mais on n’empêche pas la carte */}
-      {driversError ? (
-        <Text style={styles.warn}>Drivers: {driversError}</Text>
+      {usersError ? (
+        <Text style={styles.warn}>Drivers: {usersError}</Text>
       ) : null}
 
       <MapView

@@ -46,8 +46,8 @@ export function useFetch<T>(path: string, deps: any[] = []) {
   return { data, loading, error, refetch: load };
 }
 
-export async function getDrivers() {
-  const res = await fetch(toAbsoluteUrl("/api/ride/driver"), {
+export async function getUsers() {
+  const res = await fetch(toAbsoluteUrl("/api/ride/user"), {
     headers: { Accept: "application/json" },
   });
   const text = await res.text();

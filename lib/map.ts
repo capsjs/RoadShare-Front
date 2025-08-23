@@ -1,4 +1,4 @@
-import { Driver, MarkerData } from "@/types/type";
+import { User, MarkerData } from "@/types/type";
 
 const directionsAPI = process.env.EXPO_PUBLIC_DIRECTIONS_API_KEY;
 
@@ -7,20 +7,20 @@ export const generateMarkersFromData = ({
   userLatitude,
   userLongitude,
 }: {
-  data: Driver[];
+  data: User[];
   userLatitude: number;
   userLongitude: number;
 }): MarkerData[] => {
-  return data.map((driver) => {
+  return data.map((user) => {
     const latOffset = (Math.random() - 0.5) * 0.01;
     const lngOffset = (Math.random() - 0.5) * 0.01;
 
     return {
       // ✅ d’abord le driver, ensuite on impose les champs de Marker
-      ...driver,
+      ...user,
       latitude: userLatitude + latOffset,
       longitude: userLongitude + lngOffset,
-      title: `${driver.first_name} ${driver.last_name}`,
+      title: `${user.name}`,
     };
   });
 };

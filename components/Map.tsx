@@ -1,24 +1,19 @@
-// Map.tsx
 import { useEffect, useState } from "react";
 import MapView, { PROVIDER_DEFAULT } from "react-native-maps";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 
-import { useDriverStore, useLocationStore } from "@/store";
+import { useUserStore, useLocationStore } from "@/store";
 import {
   calculateDriverTimes,
   calculateRegion,
   generateMarkersFromData,
 } from "@/lib/map";
-import { Driver, MarkerData } from "@/types/type";
+import { User, MarkerData } from "@/types/type";
 import { useFetch } from "@/lib/fetch";
 
 // ✅ endpoint sans parenthèses + laisse useFetch préfixer avec API_BASE
 const Map = () => {
-  const {
-    data: drivers,
-    loading,
-    error,
-  } = useFetch<Driver[]>("/api/ride/driver");
+  const { data: users, loading, error } = useFetch<User[]>("/api/ride/user");
   const [markers, setMarkers] = useState<MarkerData[]>([]);
   const {
     userLongitude,
@@ -26,18 +21,18 @@ const Map = () => {
     destinationLongitude,
     destinationLatitude,
   } = useLocationStore();
-  const { setDrivers } = useDriverStore();
+  const { setUsers } = useUserStore();
 
   useEffect(() => {
-    if (Array.isArray(drivers) && userLatitude && userLongitude) {
+    if (Array.isArray(users) && userLatitude && userLongitude) {
       const newMarkers = generateMarkersFromData({
-        data: drivers,
+        data: users,
         userLatitude,
         userLongitude,
       });
       setMarkers(newMarkers);
     }
-  }, [drivers, userLatitude, userLongitude]);
+  }, [users, userLatitude, userLongitude]);
 
   useEffect(() => {
     if (
@@ -53,8 +48,8 @@ const Map = () => {
         userLongitude,
         destinationLatitude,
         destinationLongitude,
-      }).then((driversWithTimes) => {
-        if (driversWithTimes) setDrivers(driversWithTimes as MarkerData[]);
+      }).then((usersWithTimes) => {
+        if (usersWithTimes) setUsers(usersWithTimes as MarkerData[]);
       });
     }
   }, [markers, destinationLatitude, destinationLongitude]);
@@ -75,7 +70,6 @@ const Map = () => {
   }
 
   // ❌ Ne pas bloquer l’UI — affiche la carte même si drivers en erreur
-  // (Tu peux overlay un petit message si tu veux)
   return (
     <View style={styles.container}>
       {error ? (
