@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { SignedIn, useUser } from "@clerk/clerk-expo";
+import { SignedIn, useAuth, useUser } from "@clerk/clerk-expo";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 
@@ -96,8 +96,16 @@ import { useFetch, type Ride } from "@/lib/fetch";
 // ];
 
 const Home = () => {
-  const { user, isSignedIn, isLoaded } = useUser();
-  if (!isLoaded) return null;
+  const { user } = useUser();
+  const { signOut } = useAuth();
+
+  const handleSignOut = () => {
+    signOut();
+    router.replace("/(auth)/signIn");
+  };
+
+  const [hasPermission, setHasPermission] = useState<boolean>(false);
+
   const displayName =
     user?.name ??
     user?.username ??
@@ -145,8 +153,6 @@ const Home = () => {
     };
     requestLocation();
   }, []);
-
-  const handleSignOut = () => {};
 
   const handleDestinationPress = (location: {
     latitude: number;

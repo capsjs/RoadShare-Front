@@ -16,6 +16,10 @@ import { icons, images } from "@/constants";
 import InputField from "@/components/inputField";
 import CustomButton from "@/components/CustomButton";
 import OAuth from "@/components/0Auth";
+import { useUser } from "@clerk/clerk-expo";
+import { API_BASE } from "@/lib/fetch";
+
+const { user } = useUser();
 
 const SignUp = () => {
   const router = useRouter();
@@ -41,7 +45,6 @@ const SignUp = () => {
       await signUp.create({
         emailAddress: form.email,
         password: form.password,
-        firstName: form.name,
       });
 
       //Send user an email with verification code
@@ -71,6 +74,27 @@ const SignUp = () => {
       //and redirect the user
       if (signUpAttempt.status === "complete") {
         await setActive({ session: signUpAttempt.createdSessionId });
+        if (user && form.name) {
+          await user.update({ unsafeMetadata: { displayName: form.name } });
+        }
+        //Synchronize with your backend
+        try {
+          await fetch(`${API_BASE}/api/users`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify({
+              clerk_id: user?.id,
+              name: form.name,
+              email: user?.primaryEmailAddress?.emailAddress ?? form.email,
+              car_image_url: user?.imageUrl ?? null,
+              address: null,
+            }),
+          });
+        } catch {}
+
         setVerification({
           ...verification,
           state: "success",
